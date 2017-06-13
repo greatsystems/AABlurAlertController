@@ -25,9 +25,17 @@ open class AABlurAlertAction: UIButton {
 
         self.addTarget(self, action: #selector(buttonTapped), for: UIControlEvents.touchUpInside)
         self.setTitle(title, for: UIControlState.normal)
-
+        
+        self.titleLabel?.lineBreakMode = .byTruncatingTail
+        self.titleLabel?.numberOfLines = 0
+        self.titleLabel?.minimumScaleFactor = 0.5;
+        self.titleLabel?.adjustsFontSizeToFitWidth = true;
+        self.titleLabel?.textAlignment = .center
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        
         switch self.style {
         case .cancel:
+            self.titleLabel?.font = UIFont.systemFont(ofSize: 14)
             self.setTitleColor(UIColor(red:0.47, green:0.50, blue:0.55, alpha:1.00), for: UIControlState.normal)
             self.backgroundColor = UIColor(red:0.93, green:0.94, blue:0.95, alpha:1.00)
             self.layer.borderColor = UIColor(red:0.74, green:0.77, blue:0.79, alpha:1.00).cgColor
@@ -93,6 +101,8 @@ open class AABlurAlertController: UIViewController {
         lbl.font = UIFont.boldSystemFont(ofSize: 17)
         lbl.textColor = UIColor(red:0.20, green:0.22, blue:0.26, alpha:1.00)
         lbl.textAlignment = .center
+        lbl.minimumScaleFactor = 0.5;
+        lbl.adjustsFontSizeToFitWidth = true;
         return lbl
     }()
     open let alertSubtitle : UILabel = {
