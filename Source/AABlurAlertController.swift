@@ -23,8 +23,8 @@ open class AABlurAlertAction: UIButton {
         self.style = style
         self.handler = handler
 
-        self.addTarget(self, action: #selector(buttonTapped), for: UIControlEvents.touchUpInside)
-        self.setTitle(title, for: UIControlState.normal)
+        self.addTarget(self, action: #selector(buttonTapped), for: UIControl.Event.touchUpInside)
+        self.setTitle(title, for: UIControl.State.normal)
         
         self.titleLabel?.lineBreakMode = .byTruncatingTail
         self.titleLabel?.numberOfLines = 0
@@ -36,15 +36,15 @@ open class AABlurAlertAction: UIButton {
         switch self.style {
         case .cancel:
             self.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-            self.setTitleColor(UIColor(red:0.47, green:0.50, blue:0.55, alpha:1.00), for: UIControlState.normal)
+            self.setTitleColor(UIColor(red:0.47, green:0.50, blue:0.55, alpha:1.00), for: UIControl.State.normal)
             self.backgroundColor = UIColor(red:0.93, green:0.94, blue:0.95, alpha:1.00)
             self.layer.borderColor = UIColor(red:0.74, green:0.77, blue:0.79, alpha:1.00).cgColor
         default:
-            self.setTitleColor(UIColor.white, for: UIControlState.normal)
+            self.setTitleColor(UIColor.white, for: UIControl.State.normal)
             self.backgroundColor = UIColor(red:0.31, green:0.57, blue:0.87, alpha:1.00)
             self.layer.borderColor = UIColor(red:0.17, green:0.38, blue:0.64, alpha:1.00).cgColor
         }
-        self.setTitleColor(self.titleColor(for: UIControlState.normal)?.withAlphaComponent(0.5), for: UIControlState.highlighted)
+        self.setTitleColor(self.titleColor(for: UIControl.State.normal)?.withAlphaComponent(0.5), for: UIControl.State.highlighted)
         self.layer.borderWidth = 1
         self.layer.cornerRadius = 5
         self.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -65,7 +65,7 @@ open class AABlurAlertAction: UIButton {
 
 open class AABlurAlertController: UIViewController {
 
-    open var blurEffectStyle: UIBlurEffectStyle = .light
+    open var blurEffectStyle: UIBlurEffect.Style = .light
     open var imageHeight: Float = 175
     open var alertViewWidth: Float?
 
@@ -95,7 +95,7 @@ open class AABlurAlertController: UIViewController {
         imgView.contentMode = .scaleAspectFit
         return imgView
     }()
-    open let alertTitle : UILabel = {
+    public let alertTitle : UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.font = UIFont.boldSystemFont(ofSize: 17)
@@ -105,7 +105,7 @@ open class AABlurAlertController: UIViewController {
         lbl.adjustsFontSizeToFitWidth = true;
         return lbl
     }()
-    open let alertSubtitle : UILabel = {
+    public let alertSubtitle : UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.font = UIFont.boldSystemFont(ofSize: 14)
@@ -189,19 +189,19 @@ open class AABlurAlertController: UIViewController {
                 metrics: ["alertViewWidth":alertViewWidth], views: viewsDict))
         } else {
             let widthConstraints = NSLayoutConstraint(item: alertView,
-                               attribute: NSLayoutAttribute.width,
-                               relatedBy: NSLayoutRelation.equal,
+                               attribute: NSLayoutConstraint.Attribute.width,
+                               relatedBy: NSLayoutConstraint.Relation.equal,
                                toItem: self.view,
-                               attribute: NSLayoutAttribute.width,
+                               attribute: NSLayoutConstraint.Attribute.width,
                                multiplier: 0.7, constant: 0)
             if let maxAlertViewWidth = maxAlertViewWidth {
-                widthConstraints.priority = 999
+                widthConstraints.priority = UILayoutPriority(rawValue: 999)
                 self.view.addConstraint(NSLayoutConstraint(
                     item: alertView,
-                    attribute: NSLayoutAttribute.width,
-                    relatedBy: NSLayoutRelation.lessThanOrEqual,
+                    attribute: NSLayoutConstraint.Attribute.width,
+                    relatedBy: NSLayoutConstraint.Relation.lessThanOrEqual,
                     toItem: nil,
-                    attribute: NSLayoutAttribute.width,
+                    attribute: NSLayoutConstraint.Attribute.width,
                     multiplier: 1,
                     constant: maxAlertViewWidth))
             }
@@ -262,7 +262,7 @@ open class AABlurAlertController: UIViewController {
         return snapshotImage
     }
 
-    func tapOnBackground(sender: UITapGestureRecognizer) {
+    @objc func tapOnBackground(sender: UITapGestureRecognizer) {
         if sender.state == .ended {
             self.dismiss(animated: true, completion: nil)
         }
